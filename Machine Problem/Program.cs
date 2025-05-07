@@ -91,6 +91,8 @@ namespace Machine_Problem
                 new Librarian("Liam", "WorldOfWarcraftAwesomeness"),
                 new Librarian("Eudrick", "Islapnaughtypeople")
             };
+
+            List<Book> Books = new List<Book>();
             bool loop = true;
             while (loop)
             {
@@ -139,9 +141,21 @@ namespace Machine_Problem
                 {
                     if (StudentValidated)
                     {
-                        
+                        int num = 0;
+                        foreach (var student in Students) 
+                        {
+                            num++;
+                            if (student.username.Equals(username))
+                            {
+                                break;
+                            }                        
+                        }
+
                     }
                     else if (LibrarianValidated)
+                    {
+
+                    }
                 }
             }
         }

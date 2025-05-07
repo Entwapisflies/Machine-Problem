@@ -137,7 +137,11 @@ namespace Machine_Problem
                 }
                 else
                 {
-                    Console.WriteLine("Welcome aboard ");
+                    if (StudentValidated)
+                    {
+                        
+                    }
+                    else if (LibrarianValidated)
                 }
             }
         }

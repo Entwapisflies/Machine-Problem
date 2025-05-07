@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static Machine_Problem.Program;
 
 namespace Machine_Problem
 {
@@ -13,6 +14,7 @@ namespace Machine_Problem
         {
             internal string username = "";
             internal string password = "";
+            internal Queue<Book> bookshistory = new Queue<Book>();
 
             public Student(string username, string password)
             {
@@ -27,7 +29,10 @@ namespace Machine_Problem
             {
 
             }
-
+            public Student Imitate()
+            {
+                return new Student(this.username, this.password);
+            }
         }
         public class Librarian
         {
@@ -83,9 +88,58 @@ namespace Machine_Problem
 
             List<Librarian> Librarians = new List<Librarian>() {
                 new Librarian("Mable", "Ponytails5000"),
-                new Librarian("Mable", "Ponytails5000")
-
+                new Librarian("Liam", "WorldOfWarcraftAwesomeness"),
+                new Librarian("Eudrick", "Islapnaughtypeople")
             };
+            bool loop = true;
+            while (loop)
+            {
+                Console.WriteLine("\tLogin information");
+                Console.Write("Username: ");
+                string username = Console.ReadLine();
+                Console.Write("Password: ");
+                string password = Console.ReadLine();
+                bool StudentValidated = false;
+                bool LibrarianValidated = false;
+                foreach (var student in Students)
+                {
+                    if (username == student.username)
+                    {
+                        if (password.Equals(student.password))
+                        {
+                            StudentValidated = true;
+                            Console.WriteLine("Access granted");
+                        }
+                        else
+                        {
+                            Console.WriteLine("No access to " + student.username);
+                        }
+                    }
+                }
+                foreach (var librarian in Librarians)
+                {
+                    if (username == librarian.username)
+                    {
+                        if (password.Equals(librarian.password))
+                        {
+                            LibrarianValidated = true;
+                            Console.WriteLine("Access granted");
+                        }
+                        else
+                        {
+                            Console.WriteLine("No access to " + librarian.username);
+                        }
+                    }
+                }
+                if (StudentValidated == false && LibrarianValidated == false)
+                {
+                    Console.WriteLine("Invalid retrying");
+                }
+                else
+                {
+                    Console.WriteLine("Welcome aboard ");
+                }
+            }
         }
     }
 }

@@ -150,11 +150,21 @@ namespace Machine_Problem
                                 break;
                             }                        
                         }
+                        Student currentuser = Students[num];
 
                     }
                     else if (LibrarianValidated)
                     {
-
+                        int num = 0;
+                        foreach (var librarian in Librarians)
+                        {
+                            num++;
+                            if (librarian.username.Equals(username)) 
+                            {
+                                break;
+                            }
+                        }
+                        Librarian currentuser = Librarians[num];
                     }
                 }
             }

@@ -103,6 +103,8 @@ namespace Machine_Problem
                 string password = Console.ReadLine();
                 bool StudentValidated = false;
                 bool LibrarianValidated = false;
+
+
                 foreach (var student in Students)
                 {
                     if (username == student.username)
@@ -118,18 +120,21 @@ namespace Machine_Problem
                         }
                     }
                 }
-                foreach (var librarian in Librarians)
+                if (!(StudentValidated))
                 {
-                    if (username == librarian.username)
+                    foreach (var librarian in Librarians)
                     {
-                        if (password.Equals(librarian.password))
+                        if (username == librarian.username)
                         {
-                            LibrarianValidated = true;
-                            Console.WriteLine("Access granted");
-                        }
-                        else
-                        {
-                            Console.WriteLine("No access to " + librarian.username);
+                            if (password.Equals(librarian.password))
+                            {
+                                LibrarianValidated = true;
+                                Console.WriteLine("Access granted");
+                            }
+                            else
+                            {
+                                Console.WriteLine("No access to " + librarian.username);
+                            }
                         }
                     }
                 }

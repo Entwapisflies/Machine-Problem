@@ -151,6 +151,8 @@ namespace Machine_Problem
                             }                        
                         }
                         Student currentuser = Students[num];
+                        Console.WriteLine($"Username: {currentuser.username}");
+                        Console.WriteLine($"Password: {currentuser.password}");
 
                     }
                     else if (LibrarianValidated)
@@ -165,6 +167,8 @@ namespace Machine_Problem
                             }
                         }
                         Librarian currentuser = Librarians[num];
+                        Console.WriteLine($"Username: {currentuser.username}");
+                        Console.WriteLine($"Password: {currentuser.password}");
                     }
                 }
             }

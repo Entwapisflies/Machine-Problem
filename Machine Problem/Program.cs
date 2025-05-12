@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -188,7 +188,7 @@ namespace Machine_Problem
                             Console.Write("What is the name of the author of the book ");
                             string input2 = Console.ReadLine();
                             Console.WriteLine("Book: " + input1);
-                            Console.WriteLine("Author: " + input1);
+                            Console.WriteLine("Author: " + input2);
                             Console.Write("Confirm? (Y/N): ");
                             input = Console.ReadLine();
                             if (input.Equals("Y", StringComparison.OrdinalIgnoreCase))
@@ -400,6 +400,7 @@ namespace Machine_Problem
                 bool loop = true;
                 while (loop)
                 {
+                    Console.Clear();
                     Console.WriteLine("\tLogin information");
                     Console.Write("Username: ");
                     string username = Console.ReadLine();
@@ -448,6 +449,7 @@ namespace Machine_Problem
                     }
                     else
                     {
+                        Console.Clear();
                         if (StudentValidated)
                         {
                             int num = 0;

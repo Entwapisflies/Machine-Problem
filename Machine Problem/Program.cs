@@ -265,6 +265,7 @@ namespace Machine_Problem
                                                         if (request.name == BookRequests[num])
                                                         {
                                                             request.Book_Status = "Approved";
+                                                            break;
                                                         }
                                                     }
                                                     break;

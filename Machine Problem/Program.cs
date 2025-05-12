@@ -70,37 +70,50 @@ namespace Machine_Problem
                         Console.Write("Pick a number from the list not the id: ");
                         bool Checknumber = int.TryParse(Console.ReadLine(), out int target);
                         target--;
-                        if (Checknumber && target <= Booklist.Count)
+                        if (Checknumber && target < Booklist.Count)
                         {
-                            if (Booklist[target].Book_Status == "Available" && Booklist[target].Book_Status == "Pending")
+                            if (target < Booklist.Count)
                             {
-                                Booklist[target].Borrowlist.Add(username);
-                                Booklist[target].Book_Status = "Pending";
-                                Requests.Add(Booklist[target]);
-                                Console.WriteLine($"Borrow request for {Booklist[target].name} has been sent to the librarian");
+                                if (Booklist[target].Book_Status == "Available" || Booklist[target].Book_Status == "Pending")
+                                {
+                                    Booklist[target].Borrowlist.Add(username);
+                                    Booklist[target].Book_Status = "Pending";
+                                    Requests.Add(Booklist[target].Imitate());
+                                    Console.WriteLine($"Borrow request for {Booklist[target].name} has been sent to the librarian");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("The book is not avilable");
+                                }
                             }
-                            else
-                            {
-                                Console.WriteLine("The book is not avilable");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Error");
                         }
                     }
                     else if (input == "3")
                     {
+                        Console.WriteLine();
+                        Console.WriteLine("Contain logs of requests");
                         Console.WriteLine();
                         foreach (var book in Requests)
                         {
                             Console.Write($"{book.name} by {book.author} ({book.Book_Status})");
                             if (book.Book_Status == "Approved")
                             {
-                                Console.Write(": This book is now borrowed");
+                                Console.Write(": Approved");
+                            }
+                            else if (book.Book_Status == "Declined")
+                            {
+                                Console.Write(": This book is not borrowed");
                             }
                             Console.WriteLine();
                         }
+                        Console.WriteLine();
+                        Console.WriteLine("The books you are borrowing");
+                        foreach (var book in BorrowedBooks)
+                        {
+                            Console.Write($"{book.name} by {book.author}");
+                            Console.WriteLine();
+                        }
+                        Console.WriteLine();
                     }
                     else if (input == "4")
                     {
@@ -114,7 +127,7 @@ namespace Machine_Problem
                         Console.Write("Pick a number from the list not the id: ");
                         bool Checknumber = int.TryParse(Console.ReadLine(), out int target);
                         target--;
-                        if (Checknumber && target <= BorrowedBooks.Count)
+                        if (Checknumber && target < BorrowedBooks.Count)
                         {
                             Console.Write("Confirm (Y/N): ");
                             input = Console.ReadLine();
@@ -189,7 +202,7 @@ namespace Machine_Problem
                                 {
                                     Console.WriteLine($"{item.name} by {item.author} Availably status (Available)");
                                 }
-                                else
+                                else if (item.Book_Status == "Unavailable")
                                 {
                                     Console.WriteLine($"{item.name} by {item.author} Availably status (Unavailable)");
 
@@ -203,9 +216,10 @@ namespace Machine_Problem
                                 Console.WriteLine($"Request for {item.name}");
                                 if (item.Borrowlist.Count > 0)
                                 {
+                                    int num = 0;
                                     foreach (var name in item.Borrowlist)
                                     {
-                                        Console.WriteLine($" {name} wants to borrow {item.name} by {item.author}");
+                                        Console.WriteLine($" {++num}.{name} wants to borrow {item.name} by {item.author}");
                                     }
                                 }
                                 else
@@ -233,14 +247,15 @@ namespace Machine_Problem
                                 }
                             }
                             Console.WriteLine();
-                            int num = 0;
-                            foreach (var item in UserRequests)
+                            for (int i = 0; i < UserRequests.Count; i++)
                             {
+                                Console.WriteLine($"{i + 1}.{UserRequests[i]} wants to borrow {BookRequests[i]}");
                             }
                             Console.WriteLine();
                             Console.Write("Pick a number to respond: ");
-                            bool Checknumber = int.TryParse(Console.ReadLine(), out num);
-                            if (Checknumber && num <= BookRequests.Count)
+                            bool Checknumber = int.TryParse(Console.ReadLine(), out int num);
+                            num--;
+                            if (Checknumber && num < BookRequests.Count)
                             {
                                 Console.Write("Type A to accept D to decline: ");
                                 input = Console.ReadLine();
@@ -249,29 +264,64 @@ namespace Machine_Problem
                                     int i = 0;
                                     foreach(var item in Booklist)
                                     {
+                                        if (num <= BookRequests.Count && num <= UserRequests.Count)
+                                        {
+                                            if (item.name == BookRequests[num] && item.Borrowlist.Contains(UserRequests[num]))
+                                            {
+                                                item.Book_Status = "Unavailable";
+                                                item.owner = UserRequests[num];
+                                                foreach (var student in students)
+                                                {
+                                                    if (student.username == UserRequests[num])
+                                                    {
+                                                        item.owner = UserRequests[num];
+                                                        student.BorrowedBooks.Add(item);
+                                                        item.Borrowlist.Remove(student.username);
+                                                        foreach (var request in student.Requests)
+                                                        {
+                                                            if (request.name == BookRequests[num] && request.Book_Status != "Declined")
+                                                            {
+                                                                request.Book_Status = "Approved";
+                                                                break;
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Invalid input");
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (input.Equals("D", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    int i = 0;
+                                    foreach (var item in Booklist)
+                                    {
                                         if (item.name == BookRequests[num] && item.Borrowlist.Contains(UserRequests[num]))
                                         {
-                                            item.Book_Status = "Unavailable";
-                                            item.owner = UserRequests[num];
+                                            item.Book_Status = "Available";
                                             foreach (var student in students)
                                             {
                                                 if (student.username == UserRequests[num])
                                                 {
-                                                    item.owner = UserRequests[num];
-                                                    student.BorrowedBooks.Add(item);
-                                                    item.Borrowlist.Remove(student.username);
                                                     foreach (var request in student.Requests)
                                                     {
-                                                        if (request.name == BookRequests[num])
+                                                        if (request.name == BookRequests[num] && request.Book_Status != "Declined")
                                                         {
-                                                            request.Book_Status = "Approved";
+                                                            item.Borrowlist.Remove(UserRequests[num]);
+                                                            request.Book_Status = "Declined";
                                                             break;
                                                         }
                                                     }
                                                     break;
                                                 }
                                             }
-                                            
+
                                         }
                                     }
                                 }
@@ -311,6 +361,17 @@ namespace Machine_Problem
                 public Book(string name)
                 {
                     this.name = name;
+                }
+                public Book()
+                {
+                }
+                public Book Imitate()
+                {
+                    string name = this.name;
+                    string author = this.author;
+                    string Status = "Pending";
+                    return new Book() { name = name, author = author, Book_Status = Status };
+
                 }
             }
             static void Main(string[] args)
@@ -400,6 +461,7 @@ namespace Machine_Problem
                             Console.WriteLine($"Username: {currentuser.username}");
                             Console.WriteLine($"Password: {currentuser.password}");
                             Thread.Sleep(1000);
+                            Console.Clear();
                             currentuser.UserMenu(Books);
 
                         }
@@ -408,18 +470,20 @@ namespace Machine_Problem
                             int num = 0;
                             foreach (var librarian in Librarians)
                             {
-                                num++;
                                 if (librarian.username.Equals(username))
                                 {
                                     break;
                                 }
+                                num++;
+
                             }
                             Librarian currentuser = Librarians[num];
                             Console.WriteLine();
                             Console.WriteLine($"Username: {currentuser.username}");
                             Console.WriteLine($"Password: {currentuser.password}");
                             Thread.Sleep(1000);
-                            currentuser.Usermenu(Books, students)
+                            Console.Clear();
+                            currentuser.Usermenu(Books, Students);
                         }
                     }
                 }

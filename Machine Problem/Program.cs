@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading;
 using static Machine_Problem.Program;
 
+/// <summary>
+/// Object oriented programming muscle biceps
+/// </summary>
 namespace Machine_Problem
 {
     internal class Program

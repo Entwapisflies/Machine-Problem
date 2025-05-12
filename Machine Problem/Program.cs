@@ -419,6 +419,7 @@ namespace Machine_Problem
                             Console.WriteLine($"Username: {currentuser.username}");
                             Console.WriteLine($"Password: {currentuser.password}");
                             Thread.Sleep(1000);
+                            currentuser.Usermenu(Books, students)
                         }
                     }
                 }
